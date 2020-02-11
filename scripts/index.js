@@ -1,6 +1,9 @@
 $(document).ready(function() { 
     $('#btnPost').click(function() {
-        var jobDesc = {"description": $('#jd').val()};
+        var jobDesc = {
+            "jobTitle": $('#jobTitle').val(),
+            "description": $('#jd').val()
+        };
         $.ajax({
             type: "POST",
             url: "/postJob",
