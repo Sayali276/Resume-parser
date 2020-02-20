@@ -7,9 +7,6 @@ var MongoClient = require('mongodb').MongoClient
 const app = express()
 const port = 3000
 
-console.log(PythonShell)
-console.log(PythonShell.run)
-
 app.use(express.static(__dirname + '/'));
 app.get('/', (req, res) => {
     sendFile(__dirname + '/' + 'index.html');
