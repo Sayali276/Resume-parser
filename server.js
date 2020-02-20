@@ -27,10 +27,6 @@ app.post("/postJob", (req, res) => {
           res.status(500).send('Something broke!');
         } else {
           jdModel['topTokens'] = JSON.parse(results[0])
-          console.log('Script Completed');
-          console.log('------------------------------------');
-          console.log(jdModel);
-          console.log('------------------------------------');
           MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
             if (err) throw err
             var db = client.db('resumeParser')
