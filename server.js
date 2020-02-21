@@ -1,12 +1,14 @@
 "use strict";
-let {PythonShell} = require('python-shell')
+const {PythonShell} = require('python-shell')
 const express = require('express')
 const bodyParser = require("body-parser");
-var fs = require('fs');
+const fs = require('fs');
+const path = require('path');
+const GridFsStorage = require('multer-gridfs-storage');
+
 var MongoClient = require('mongodb').MongoClient
 var ObjectID = require('mongodb').ObjectID
 
-const GridFsStorage = require('multer-gridfs-storage');
 const storage = new GridFsStorage({ url : 'mongodb://localhost:27017/resumeParser',
   file: (req, file) => {
     return {
@@ -20,20 +22,18 @@ const upload = multer({ storage });
 const app = express()
 const port = 3000
 
-app.use(express.static(__dirname + '/'));
-app.get('/', (req, res) => {
-    sendFile(__dirname + '/' + 'index.html');
-})
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.get('/recruiter', function(req, res) {
+  res.sendFile('/recruiter/index.html');
+});
 
-app.use(express.static(__dirname + '/applicant'));
-app.get('/applicant', (req, res) => {
-    sendFile(__dirname + '/applicant/' + 'index.html');
-})
+app.get('/applicant', function(req, res) {
+  res.sendFile('/applicant/index.html');
+});
 
-app.use(express.static(__dirname + '/applicant'));
 app.get('/applicant/applied.html', (req, res) => {
-  res.sendFile(__dirname + '/applicant/' + 'applied.html');
-})
+  res.sendFile('/applicant/applied.html');
+});
 
 
 app.post('/applyJob', upload.single('resume'), (req, res) => {
