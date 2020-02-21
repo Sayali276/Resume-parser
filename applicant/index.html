@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Apply for Job</title>
+</head>
+<body>  
+    <div class="container-fluid" style="margin-top: 40px;">
+        <div class="row">
+            <div class="col col-lg-6">
+                <h5 id="jobTitle"></h5>
+                <h5>Description: </h5>
+                <p align="justify" id="jobDesc"></p>
+            </div>
+            <div class="col col-lg-6">
+                <form action="/applyJob" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="applicantName">Your Name</label>
+                        <input type="text" class="form-control" id="applicantName" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantEmail">Email address</label>
+                        <input type="email" class="form-control" id="applicantEmail" placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantPhone">Phone</label>
+                        <input class="form-control" type="tel" id="applicantPhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="resume">Resume</label>
+                        <input type="file" class="form-control-file" id="resume">
+                    </div>
+                </form>
+                <button type="button" id="btnApply" class="btn btn-primary">Apply</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

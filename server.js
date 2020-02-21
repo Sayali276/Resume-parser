@@ -4,12 +4,73 @@ const express = require('express')
 const bodyParser = require("body-parser");
 var fs = require('fs');
 var MongoClient = require('mongodb').MongoClient
+var ObjectID = require('mongodb').ObjectID
+
+const GridFsStorage = require('multer-gridfs-storage');
+const storage = new GridFsStorage({ url : 'mongodb://localhost:27017/resumeParser',
+  file: (req, file) => {
+    return {
+      filename: file.originalname
+    };
+  }
+ });
+const multer = require('multer');
+const upload = multer({ storage });
+
 const app = express()
 const port = 3000
 
 app.use(express.static(__dirname + '/'));
 app.get('/', (req, res) => {
     sendFile(__dirname + '/' + 'index.html');
+})
+
+app.use(express.static(__dirname + '/applicant'));
+app.get('/applicant', (req, res) => {
+    sendFile(__dirname + '/applicant/' + 'index.html');
+})
+
+app.use(express.static(__dirname + '/applicant'));
+app.get('/applicant/applied.html', (req, res) => {
+  res.sendFile(__dirname + '/applicant/' + 'applied.html');
+})
+
+
+app.post('/applyJob', upload.single('resume'), (req, res) => {
+  const formData = req.body;
+  console.log('form data', formData);
+  console.log('req.file', req.file);
+
+  var applicant = {
+    name: req.body.applicantName,
+    email: req.body.applicantEmail,
+    phone: req.body.applicantPhone,
+    jobId: new ObjectID(req.body.jdId),
+    resume: new ObjectID(req.file.id)
+  }
+
+  MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
+    if (err) throw err
+    var db = client.db('resumeParser')
+    db.collection('applicant').insertOne(applicant, function(err, result) {
+      console.log("New Applicant Registered" + result.insertedId)
+    });
+  })
+
+  res.status(201);
+  res.end("Job Applied Sucessfully");
+});
+
+app.get('/applicant/getJob', function (req, res) {
+  var jdId = req.query.jd;
+  MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
+    if (err) throw err
+    var db = client.db('resumeParser')
+    db.collection('jobs').findOne({"_id" : new ObjectID(jdId)}, function(err, result) {
+      if(err) res.send({error: err})
+      res.send(result)
+    });
+  })
 })
 
 var opt = {
@@ -30,8 +91,8 @@ app.post("/postJob", (req, res) => {
           MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
             if (err) throw err
             var db = client.db('resumeParser')
-            db.collection('resumeParser').insertOne(jdModel, function(err, result) {
-              console.log(result)
+            db.collection('jobs').insertOne(jdModel, function(err, result) {
+              console.log("New Job Posted" + result.insertedId)
             });
           })
         }
