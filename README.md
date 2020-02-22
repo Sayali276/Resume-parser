@@ -13,7 +13,7 @@ What things you need to install the software
 Node.js
 MongoDb
 Python 3.8.1
-[Xpdf] (https://xpdfreader-dl.s3.amazonaws.com/XpdfReader-win64-4.02.exe)
+[Xpdf](https://www.xpdfreader.com/download.html)
 ```
 
 ### Installing
