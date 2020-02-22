@@ -90,6 +90,43 @@ app.post('/applyJob', upload.single('resume'), (req, res) => {
   res.end('Job Applied Sucessfully');
 });
 
+/**
+ * HTTP POST API for posting job
+ * Creates new Job in backend
+ */
+var opt = {
+  'type': 'application/json'
+}
+app.use(bodyParser.text(opt));
+app.post('/postJob', (req, res) => {
+  var jdModel = JSON.parse(req.body);
+  var options = {
+      args: [jdModel.description]
+  };
+  PythonShell.run('jd-parser.py', options, function(err, results) {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Something broke!');
+      } else {
+        jdModel['topTokens'] = JSON.parse(results[0])
+        MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
+          if (err) throw err
+          var db = client.db('resumeParser')
+          db.collection('jobs').insertOne(jdModel, function(err, result) {
+            console.log('New Job Posted' + result.insertedId)
+          });
+        })
+      }
+    });
+  res.status(201);
+  res.end('Job Posted Sucessfully');
+})
+
+/**
+ * REST API
+ * Gets job description for the given jobId
+ * Query Paramater - jd - MongoDb Id for retrieving Job
+ */
 app.get('/applicant/getJob', function (req, res) {
   var jdId = req.query.jd;
   MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
@@ -100,34 +137,6 @@ app.get('/applicant/getJob', function (req, res) {
       res.send(result)
     });
   })
-})
-
-var opt = {
-    'type': 'application/json'
-}
-app.use(bodyParser.text(opt));
-app.post('/postJob', (req, res) => {
-    var jdModel = JSON.parse(req.body);
-    var options = {
-        args: [jdModel.description]
-    };
-    PythonShell.run('jd-parser.py', options, function(err, results) {
-        if (err) {
-          console.log(err);
-          res.status(500).send('Something broke!');
-        } else {
-          jdModel['topTokens'] = JSON.parse(results[0])
-          MongoClient.connect('mongodb://localhost:27017/resumeParser', function (err, client) {
-            if (err) throw err
-            var db = client.db('resumeParser')
-            db.collection('jobs').insertOne(jdModel, function(err, result) {
-              console.log('New Job Posted' + result.insertedId)
-            });
-          })
-        }
-      });
-    res.status(201);
-    res.end('Job Posted Sucessfully');
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
