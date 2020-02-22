@@ -7,7 +7,7 @@ Final year project
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 ### Prerequisites
 
-What things you need to install the software 
+What things you need to install to run the website
 
 * [Node.js](https://nodejs.org/en/download/)
 * [MongoDb](https://www.mongodb.com/download-center/community)
