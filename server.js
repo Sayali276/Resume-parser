@@ -65,8 +65,6 @@ app.post('/applyJob', upload.single('resume'), (req, res) => {
     .on('error', function(error) {
       console.log('ERROR in streaming file from GridFS - ' + error)
     }).on('finish', function() {
-      
-      //TODO: Read file from PDFUtils
       pdfUtil.pdfToText('./output.pdf', function(err, data) {
         if(err) throw err        
         var options = {
