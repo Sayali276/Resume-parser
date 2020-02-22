@@ -9,12 +9,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software 
 
-```
-Node.js
-MongoDb
-Python 3.8.1
-[Xpdf](https://www.xpdfreader.com/download.html)
-```
+* [Node.js](https://nodejs.org/en/download/)
+* [MongoDb](https://www.mongodb.com/download-center/community)
+* [Python](https://www.python.org/downloads/)
+* [Xpdf](https://www.xpdfreader.com/download.html)
 
 ### Installing
 
