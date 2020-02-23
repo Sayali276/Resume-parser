@@ -29,6 +29,10 @@ app.get('/recruiter', function(req, res) {
   res.sendFile('/recruiter/index.html');
 });
 
+app.get('/recruiter/applicants.html', function(req, res) {
+  res.sendFile('/recruiter/applicants.html');
+});
+
 app.get('/applicant', function(req, res) {
   res.sendFile('/applicant/index.html');
 });
