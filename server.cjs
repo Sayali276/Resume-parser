@@ -169,6 +169,11 @@ app.get('/recruiter/getApplicants', (req, res) => {
     })
 })
 
+/**
+ * REST API
+ * Retrieves the applicant's resume from Grid FS
+ * Query Paramater - jd - MongoDb Id for stored resume file
+ */
 app.get('/downloadResume',(req, res) => {
     var fileId = req.query.fileId;
     MongoClient.connect('mongodb://localhost:27017/resumeParser', (err, client) => {
