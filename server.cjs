@@ -27,6 +27,9 @@ const upload = multer({ storage });
  * Serve Web pages
  */
 app.use('/', express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/home.html');
+});
 app.get('/recruiter', (req, res) => {
     res.sendFile('/recruiter/index.html');
 });
@@ -118,12 +121,12 @@ app.post('/postJob', (req, res) => {
                 var db = client.db('resumeParser')
                 db.collection('jobs').insertOne(jdModel, (err, result) => {
                     console.log('New Job Posted' + result.insertedId)
+                    res.status(201);
+                    res.send({"JobId": result.insertedId});
                 });
             })
         }
     });
-    res.status(201);
-    res.end('Job Posted Sucessfully');
 })
 
 /**
@@ -165,6 +168,29 @@ app.get('/recruiter/getApplicants', (req, res) => {
                 });
             })
             res.send(applicants)
+        });
+    })
+})
+
+/**
+ * REST API
+ * Gets List of Jobs from Mongo DB
+ */
+app.get('/getJobs', (req, res) => {
+    var jdId = req.query.jd;
+    MongoClient.connect('mongodb://localhost:27017/resumeParser', (err, client) => {
+        if (err) throw err
+        var db = client.db('resumeParser')
+        db.collection('jobs').find({}).toArray((err, results) => {
+            var jobs = results.map(job => {
+                return ({
+                    id : job._id,
+                    jobTitle : job.jobTitle,
+                    jobPostingLink : '/applicant?jd=' + job._id,
+                    listOfApplicants: 'recruiter/applicants.html?jd=' + job._id,
+                });
+            })
+            res.send(jobs)
         });
     })
 })

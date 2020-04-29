@@ -1,4 +1,7 @@
 $(document).ready(function() { 
+    $('#closeModal').click(function() {
+        location.href = '/';
+    });
     $('#btnPost').click(function() {
         var jobDesc = {
             "jobTitle": $('#jobTitle').val(),
@@ -8,8 +11,12 @@ $(document).ready(function() {
             type: "POST",
             url: "/postJob",
             data: JSON.stringify(jobDesc),
-            success: function() {
-                console.log("POST SUCESS")
+            success: function(data, status, xhr) {
+                console.log(status);
+                $('#jdId').html(data.JobId);
+                $('#jobLink').html("<a href='/applicant?jd=" + data.JobId + "'>this link</a>");
+                $('#recruiterJobLink').html("<a href='recruiter/applicants?jd=" + data.JobId + "'>this link</a>");
+                $('#postedModal').modal('show');
             },
             contentType: "application/json"
           });

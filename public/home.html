@@ -6,28 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Top Applicants</title>
+    <title>Job Posting</title>
 </head>
 
-<body>
+<body style="margin-top: 20px;">
     <div class="row">
-        <h4 class="col-md-3 offset-md-1">Job Title: Software Engineer</h4>
-        <div class="col-md-5 form-group">
-            <label for="noOfApplicants">Choose number of applicants you want to retrieve</label>
-            <input type="range" class="custom-range form-control" min="0" max="100" id="noOfApplicants" value="20">
-        </div>
+        <h4 class="col-md-7 offset-md-5">Welcome to Job Posting site</h4>
     </div>
     <div class="row">
-        <table class="table col-md-10 offset-md-1">
+        <p class="col-md-10 offset-md-2">Here's the list of jobs that are currently active in the system</p>
+    </div>
+    <div class="row">
+        <table class="table col-md-8 offset-md-2">
             <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Resume</th>
+                    <th scope="col">Job Id</th>
+                    <th scope="col">Job Title</th>
+                    <th scope="col">Job Posting</th>
+                    <th scope="col">List of Applicants</th>
                 </tr>
             </thead>
-            <tbody id="applicantList">
+            <tbody id="jobList">
             </tbody>
         </table>
     </div>
@@ -39,7 +38,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script type="text/javascript" src="scripts/applicants.js"></script>
+    <script type="text/javascript" src="scripts/homescript.js"></script>
 </body>
 
 </html>
