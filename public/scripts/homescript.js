@@ -1,5 +1,8 @@
 $(document).ready(function() { 
     getJobs();
+    $('#btnPostJob').click(function() {
+        location.href = '/recruiter';
+    });
 }); 
 
 function getJobs() {
@@ -7,7 +10,7 @@ function getJobs() {
         var table = data.map(job => {
             var row = 
             `<tr><td>${job.id}</td><td>${job.jobTitle}</td>
-            <td><a href='${job.jobPostingLink}'>View</a></td><td><a href='${job.listOfApplicants}}'>View</a></td></tr>`
+            <td><a href='${job.jobPostingLink}'>View</a></td><td><a href='${job.listOfApplicants}'>View</a></td></tr>`
             return row;
         }).join('')
         $('#jobList').html(table);
