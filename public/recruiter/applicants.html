@@ -11,16 +11,18 @@
 
 <body style="margin-top: 20px;">
     <div class="row">
-        <h4 id="jobTitle" class="col-md-3 offset-md-1">Job Title: Software Engineer</h4>
+        <h4 id="jobTitle" class="col-md-4 offset-md-1"></h4>
         <div class="col-md-5 form-group">
             <label for="noOfApplicants">Choose number of applicants you want to retrieve</label>
-            <input type="range" class="custom-range form-control" min="0" max="100" id="noOfApplicants" value="20">
+            <input type="range" class="custom-range form-control" min="0" max="100" id="noOfApplicants" value="10">
+            <div id="result">No. of Applicants: <b></b></div>
         </div>
     </div>
     <div class="row">
         <table class="table col-md-10 offset-md-1">
             <thead>
                 <tr>
+                    <th scope="col">Applicant Rating</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>

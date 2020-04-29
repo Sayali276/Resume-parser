@@ -61,6 +61,8 @@ app.post('/applyJob', upload.single('resume'), (req, res) => {
         resumeName: req.file.filename
     }
 
+    var jobTokens = JSON.parse(req.body.jobTokens)
+
     MongoClient.connect('mongodb://localhost:27017/resumeParser', (err, client) => {
         if (err) throw err
         var db = client.db('resumeParser')
@@ -85,17 +87,23 @@ app.post('/applyJob', upload.single('resume'), (req, res) => {
                         res.status(500).send('Something broke!');
                     } else {
                         applicant['topTokens'] = JSON.parse(results[0])
+                        applicant['rating'] = getApplicantScore(jobTokens, applicant['topTokens'])
                         db.collection('applicant').insertOne(applicant, (err, result) => {
-                            console.log('New Applicant Registered' + result.insertedId)
+                            console.log('New Applicant Registered - ' + result.insertedId)
+                            res.status(201);
+                            res.send({"applicantId": result.insertedId});
                         });
                     }
                 });
             });
         });
     })
-    res.status(201);
-    res.end('Job Applied Sucessfully');
 });
+
+function getApplicantScore(jobTokens, applicantTokens) {
+    var difference = jobTokens.filter(x => !applicantTokens.map(i => i.Word).includes(x.Word));
+    return ( (jobTokens.length - difference.length) / jobTokens.length) * 100;
+}
 
 /**
  * HTTP POST API for posting job
@@ -120,7 +128,7 @@ app.post('/postJob', (req, res) => {
                 if (err) throw err
                 var db = client.db('resumeParser')
                 db.collection('jobs').insertOne(jdModel, (err, result) => {
-                    console.log('New Job Posted' + result.insertedId)
+                    console.log('New Job Posted - ' + result.insertedId)
                     res.status(201);
                     res.send({"JobId": result.insertedId});
                 });
@@ -160,13 +168,14 @@ app.get('/recruiter/getApplicants', (req, res) => {
         db.collection('applicant').find({'jobId': new ObjectID(jdId)}).limit(noOfApplicants).toArray((err, results) => {
             var applicants = results.map(applicant => {
                 return ({
+                    rating: applicant.rating ? applicant.rating : 0,
                     name : applicant.name,
                     email : applicant.email,
                     phone : applicant.phone,
                     resume: applicant.resume,
                     resumeName: applicant.resumeName
                 });
-            })
+            }).sort((a, b) => b.rating - a.rating);
             res.send(applicants)
         });
     })
@@ -227,4 +236,4 @@ app.get('/downloadResume',(req, res) => {
     })
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Resume Parser app listening on port ${port}!`))
